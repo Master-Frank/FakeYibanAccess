@@ -26,8 +26,8 @@
         <input value="114514" id="studentId" />
       </div>
       <div>
-        <button id="out">出</button>
-        <button id="in">入</button>
+        <button id="out" onclick="enterFullScreen()">出</button>
+        <button id="in" onclick="enterFullScreen()">入</button>
       </div>
     </div>
   </main>
@@ -37,6 +37,30 @@
     var studentId = $("#studentId");
     var out = $("#out");
     var getin = $("#in");
+
+    //进入全屏
+    function enterFullScreen() {
+      var de = document.documentElement;
+      if (de.requestFullscreen) {
+        de.requestFullscreen();
+      } else if (de.mozRequestFullScreen) {
+        de.mozRequestFullScreen();
+      } else if (de.webkitRequestFullScreen) {
+        de.webkitRequestFullScreen();
+      }
+    }
+    //退出全屏
+    function exitFullScreen() {
+      var de = document;
+      if (de.exitFullscreen) {
+        de.exitFullscreen();
+      } else if (de.mozCancelFullScreen) {
+        de.mozCancelFullScreen();
+      } else if (de.webkitCancelFullScreen) {
+        de.webkitCancelFullScreen();
+      }
+    }
+
     out.on('click', function () {
       location.href = `show.html?studentId=${studentId.val()}&studentName=${studentName.val()}&fun=0`
     })
