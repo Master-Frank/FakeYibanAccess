@@ -36,7 +36,7 @@
 
 				<font class="typeTxt"></font>校。
 			</p>
-			<p id="rxbz" style="text-indent: 2em;">注：必须在<span id="inSchoolEndTime"></span>前返校。</p>
+			<p id="attention" style="text-indent: 2em;">注：必须在<span id="inSchoolEndTime"></span>前返校。</p>
 
 		</div>
 		<div style="overflow: hidden;margin-top: 50px;">
@@ -93,6 +93,8 @@
 			studentName = decodeURIComponent(strs[1].replace("studentName=", ""));
 			if (decodeURIComponent(strs[2].replace("fun=", "")) === "1") {
 				fun = "入";
+				// 去掉《注》那一行
+				$("#attention").css("display", "none");
 			} else {
 				fun = "出";
 			};
