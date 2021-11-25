@@ -1,0 +1,34 @@
+.title {
+    text-align: center;
+  }
+
+  main {
+    padding: 5% 25%;
+  }
+
+  button {
+    background-color: #6cb0fb;
+    color: #fff;
+    width: 45%;
+    height: 20%;
+    margin-top: 5%;
+    outline: none;
+    border: none;
+  }
+
+  #out {
+    float: left;
+  }
+
+  #in {
+    float: right;
+  }
+
+  .form>div {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }

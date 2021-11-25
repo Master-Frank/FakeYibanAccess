@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>出入凭证</title>
+	<meta name="theme-color" content="#6DB0FA">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="format-detection" content="telephone=no" />
+	<link rel="stylesheet" href="./css/show.css">
+</head>
+
+<body onload="inshcool(), enterFullScreen()" style="background: #fff">
+	<header>
+		<div class="title-bar">
+			<a class="return">
+				<img class="title-icon" src="./images/return.png" />
+			</a>
+			<span class="title-text">出入凭证</span>
+			<a class="return">
+				<img class="title-icon" src="./images/close.png" />
+			</a>
+			<img class="title-icon" src="./images/more.png" />
+		</div>
+	</header>
+	<div class="infoBox">
+		<div class="title" style="text-align: center;">
+			<font class="typeTxt"></font>校凭证
+		</div>
+		<div class="content">
+			<p style="text-indent: 2em;">
+				<span id="studentName" style="text-decoration: none;"></span>
+				同学可于
+				<span id="startTime"></span>
+
+				<font class="typeTxt"></font>校。
+			</p>
+			<p id="rxbz" style="text-indent: 2em;">注：必须在<span id="inSchoolEndTime"></span>前返校。</p>
+
+		</div>
+		<div style="overflow: hidden;margin-top: 50px;">
+
+			<div id="remainingTime" class="remainingTimeBox"></div>
+			<div id="checkNA"></div>
+			<div id="typeBox" style="animation: color 1s infinite;"></div>
+			<div id="checkCode"></div>
+			<div id="timeBox" class="timeBox"></div>
+			<div id="tipBox"></div>
+		</div>
+	</div>
+</body>
+<script src="./js/mui.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/common.js"></script>
+<script>
+	var iset;
+	var now = 0;
+	var nowT;
+	var endTime = new Date().getTime() + 300000;
+	var dateColorArr = ['kf-greenyellow', 'kf-black', 'kf-blueviolet', 'kf-green', 'kf-cyan', 'kf-blue', 'kf-purple'];
+
+
+	//进入全屏
+	function enterFullScreen() {
+		var de = document.documentElement;
+		if (de.requestFullscreen) {
+			de.requestFullscreen();
+		} else if (de.mozRequestFullScreen) {
+			de.mozRequestFullScreen();
+		} else if (de.webkitRequestFullScreen) {
+			de.webkitRequestFullScreen();
+		}
+	}
+	//退出全屏
+	function exitFullScreen() {
+		var de = document;
+		if (de.exitFullscreen) {
+			de.exitFullscreen();
+		} else if (de.mozCancelFullScreen) {
+			de.mozCancelFullScreen();
+		} else if (de.webkitCancelFullScreen) {
+			de.webkitCancelFullScreen();
+		}
+	}
+
+	function getParam() {
+		var url = location.search; //获取url中"?"符后的字串
+		if (url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			strs = str.split("&");
+			studentId = decodeURIComponent(strs[0].replace("studentId=", ""));
+			studentName = decodeURIComponent(strs[1].replace("studentName=", ""));
+			if (decodeURIComponent(strs[2].replace("fun=", "")) === "1") {
+				fun = "入";
+			} else {
+				fun = "出";
+			};
+		}
+		var info = new Array(studentName, studentId, fun);
+		return info;
+	}
+
+	function inshcool() {
+		now = new Date().getTime();
+		nowT = setInterval(function () {
+			now = now + 1000;
+			$("#timeBox").html(new Date(now).Format("yyyy-MM-dd hh:mm:ss"));
+			var s = endTime - now;
+			$("#remainingTime").html("该凭证" + formatDuring(s) + "后将失效，请尽快" + fun + "校")
+		}, 1000);
+		$("#startTime").html(new Date().Format("yyyy-MM-dd"));// 出校
+		$("#inSchoolEndTime").html(new Date(new Date().getTime() + 14400000).Format("yyyy-MM-dd hh:mm:ss"));//必须进校
+		$("#studentName").html(getParam()[0] + "（" + getParam()[1] + "）");
+		$("#typeBox").html(getParam()[2]);
+		$(".typeTxt").html(getParam()[2]);
+		$("#typeBox").css("animation", dateColorArr[new Date().getDay()] + " 1s infinite");
+		$("#typeBox").css("-webkit-animation", dateColorArr[new Date().getDay()] + " 1s infinite");
+	}
+
+	function formatDuring(mss) {
+		var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		hours = hours < 10 ? "0" + hours : hours;
+		var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+		minutes = minutes < 10 ? "0" + minutes : minutes;
+		var seconds = parseInt((mss % (1000 * 60)) / 1000);
+		seconds = seconds < 10 ? "0" + seconds : seconds;
+		return hours + ":" + minutes + ":" + seconds;
+	}
+
+	$('.return').on('click', function () {
+		location.href = `./index.html`;
+	})
+</script>
+
+</html>

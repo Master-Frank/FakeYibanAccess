@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="theme-color" content="#6DB0FA" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>生成出入凭证</title>
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+  <header>
+    <h1 class="title">生成出入凭证</h1>
+  </header>
+  <main>
+    <div class="form">
+      <div>
+        <div>姓名</div>
+        <input value="雍和明" id="studentName" />
+      </div>
+      <div>
+        <div>学号</div>
+        <input value="114514" id="studentId" />
+      </div>
+      <div>
+        <button id="out">出</button>
+        <button id="in">入</button>
+      </div>
+    </div>
+  </main>
+  <script src="./js/jquery.min.js"></script>
+  <script>
+    var studentName = $("#studentName");
+    var studentId = $("#studentId");
+    var out = $("#out");
+    var getin = $("#in");
+    out.on('click', function () {
+      location.href = `show.html?studentId=${studentId.val()}&studentName=${studentName.val()}&fun=0`
+    })
+    getin.on('click', function () {
+      location.href = `show.html?studentId=${studentId.val()}&studentName=${studentName.val()}&fun=1`
+    })
+  </script>
+</body>
+
+</html>
