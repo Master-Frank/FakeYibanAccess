@@ -77,7 +77,7 @@
                     <font color="#FF0000">(推荐)生成二维码后截图保存，用易班扫一扫打开</font>
                     <br />
                     <div class="aui-code-btn">
-                        <button type="button" onClick="gonext()" id="bt1">直接进入页面</button>
+                        <button type="button" onclick="gonext()" id="bt1">直接进入页面</button>
                     </div>
                 </form>
             </div>
@@ -141,7 +141,7 @@
             var outType = document.getElementById('outType').value.replace(/(^\s*)|(\s*$)/g, '');
             var checkstatus = document.getElementById('checkbox1').checked;
             if (checkstatus == true) {
-                url = "https:/yiban.frankdawn.com.cn/beta-default.html?studentName=" + name + "&studentId=" + id + "&studentSex=" + sex + "&className=" + className + "&specialty=" + specialty + "&departmentName=" + departmentName + "&auditName=" + auditName + "&outType=" + outType;
+                url = "https://yiban.frankdawn.com.cn/beta-default.html?studentName=" + name + "&studentId=" + id + "&studentSex=" + sex + "&className=" + className + "&specialty=" + specialty + "&departmentName=" + departmentName + "&auditName=" + auditName + "&outType=" + outType;
             } else {
                 alert("请先阅读并同意免责说明书！");
             }
