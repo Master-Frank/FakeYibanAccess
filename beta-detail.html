@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>出校申报详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <style>
+        body {
+            background: #fff;
+            padding-bottom: 45px;
+        }
+
+        .mui-content {
+            background: #fff;
+        }
+
+        .title {
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .outScholTitle {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            background: #f5f5f5;
+            line-height: 30px;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .outScholContent {
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .outScholContent {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+            .outScholContent label {
+                color: #666;
+            }
+
+            .outScholContent span {
+                color: #000;
+            }
+
+        #urlBox {
+            padding: 0 20px 20px 20px;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+            #urlBox div {
+                width: 100%;
+                overflow: hidden;
+                display: block;
+            }
+
+            #urlBox a {
+                color: blue;
+                word-break: break-all;
+            }
+
+        /*.mui-popup-button{color: red;}*/
+    </style>
+</head>
+
+<body>
+
+    <div class="mui-content">
+        <div id="txtBox">
+            <div class="title"><span id="name"></span>的出校申报详情单</div>
+            <div class="outScholTitle">申请人</div>
+            <div class="space"></div>
+            <div class="outScholContent" id="studentBox"></div>
+            <div class="space"></div>
+            <div class="outScholTitle">申请内容</div>
+            <div class="space"></div>
+            <div class="outScholContent" id="outScholDetailBox"></div>
+            <div class="outScholContent" id="imagesBox"></div>
+
+            <div class="space"></div>
+            <div class="outScholTitle" id="auditTitleBox">审批记录</div>
+            <div class="space"></div>
+            <div class="outScholContent" id="auditBox"></div>
+
+            <div class="space"></div>
+        </div>
+        <div class="outScholContent" id="imagesBox"></div>
+    </div>
+    <div id="imgBox"></div>
+    <div id="urlBox"></div>
+
+
+    <nav class="footerNav outSchool">
+        <button style="width: 20%;" class="bzBtn whiteBtn" type="button" onclick="addImg()"
+                disabled="disabled">
+            <span>补正</span>
+        </button>
+
+        <button style="width: 40%;" class="createOutBtn greenBtn" type="button" onclick="outSchool()"
+                disabled="disabled">
+            <span>生成出校凭证</span>
+        </button>
+
+        <button style="width: 40%;" class="createInBtn blueBtn" type="button" onclick="inSchool()"
+                disabled="disabled">
+            <span>生成入校凭证</span>
+        </button>
+    </nav>
+
+    <script src="js/mui.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/common.js"></script>
+
+    <script>
+        function getParam() {
+            var url = location.search; //获取url中"?"符后的字串
+            var info = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    if (strs[i].indexOf("studentName=") != -1) {
+                        info['studentName'] = decodeURIComponent(strs[i].replace("studentName=", ""));
+                    };
+                    if (strs[i].indexOf("studentId=") != -1) {
+                        info['studentId'] = decodeURIComponent(strs[i].replace("studentId=", ""));
+                    };
+                    if (strs[i].indexOf("studentSex=") != -1) {
+                        info['studentSex'] = decodeURIComponent(strs[i].replace("studentSex=", ""));
+                    };
+                    //新增可改项
+                    if (strs[i].indexOf("className=") != -1) {
+                        info['className'] = decodeURIComponent(strs[i].replace("className=", ""));
+                    };
+                    if (strs[i].indexOf("specialty=") != -1) {
+                        info['specialty'] = decodeURIComponent(strs[i].replace("specialty=", ""));
+                    };
+                    if (strs[i].indexOf("departmentName=") != -1) {
+                        info['departmentName'] = decodeURIComponent(strs[i].replace("departmentName=", ""));
+                    };
+                    if (strs[i].indexOf("auditName=") != -1) {
+                        info['auditName'] = decodeURIComponent(strs[i].replace("auditName=", ""));
+                    };
+                    if (strs[i].indexOf("outType=") != -1) {
+                        info['outType'] = decodeURIComponent(strs[i].replace("outType=", ""));
+                    };
+                };
+                return info;
+            } else {
+                info = { 'studentName': '雍和明', 'studentId': '114514', 'studentSex': '男','className':'19保险学-2班', 'specialty': '保险学', 'departmentName': '保险学院', 'auditName': '李思颖' ,'outType': '实习'};
+                return info;
+            }
+        }
+
+        function getMoble() {
+            var prefixArray = new Array("130", "131", "132", "133", "135", "137", "138", "170", "187", "189");
+            var i = parseInt(10 * Math.random());
+            var prefix = prefixArray[i];
+            for (var j = 0; j < 8; j++) {
+                prefix = prefix + Math.floor(Math.random() * 10);
+            }
+            return prefix;
+        }
+
+        function randomOutSchoolID() {
+            var randomNum = '';
+            for (var i = 0; i < 5; i++) {
+                randomNum += Math.floor(Math.random() * 10);
+            }
+            return new Date().Format("yyyyMMdd" + randomNum)
+        }
+
+        (function (mui) {
+            mui.init();
+            getMyOutSchool();
+        })(mui);
+
+        function outSchool() {
+            var txt = '<p style="color:red">出校凭证有效时间仅5分钟，请确定你已在校门附近准备出校？</p>';
+            var btnArray = ['是', '否'];
+            mui.confirm(txt, '<p style="color:red;font-weight:bold">重要提示！！！</p>', btnArray, function (e) {
+                window.location.href = "student-outschool.html?studentName=" + getParam()['studentName'] + "&studentId=" + getParam()['studentId'] + "&studentSex=" + getParam()['studentSex'];
+            })
+        }
+
+        function inSchool() {
+            var txt = '<p style="color:red">入校凭证有效时间仅5分钟，请确定你已在校门附近准备入校？</p>';
+            var btnArray = ['是', '否'];
+            mui.confirm(txt, '<p style="color:red;font-weight:bold">重要提示！！！</p>', btnArray, function (e) {
+                window.location.href = "student-inschool.html?studentName=" + getParam()['studentName'] + "&studentId=" + getParam()['studentId'] + "&studentSex=" + getParam()['studentSex'];
+            })
+        }
+
+        function getMyOutSchool(result) {
+            var result = {
+                "msg": "查询成功",
+                "data": [
+                    {
+                        "linkName": "",
+                        "className": getParam()["className"],
+                        "outSchoolID": randomOutSchoolID(),
+                        "studentID": getParam()["studentId"],
+                        "passStatus": "出",
+                        "sex": getParam()["studentSex"],
+                        "name": getParam()["studentName"],
+                        "outAddress": "广东省广州市天河区",
+                        "submitDate": new Date(new Date().getTime() - 14400000).Format("yyyy/MM/dd hh:mm:ss"),
+                        "passNum": "每天出入一次",
+                        "days": "3",
+                        "status": "1",
+                        "state1": "1",
+                        "specialty": getParam()["specialty"],
+                        "departmentName": getParam()["departmentName"],
+                        "yearIn": '20'+getParam()["studentId"].substr(0,2),
+                        "linkPhone": "",
+                        "otherOutType": "",
+                        "outType": getParam()["outType"],
+                        "phone": getMoble(),
+                        "startDate": new Date().Format("yyyy/MM/dd hh:mm:ss"),
+                        "endDate": new Date(new Date().getTime() + 259200000).Format("yyyy/MM/dd hh:mm:ss")
+                    }
+                ],
+                "code": 0
+            };
+            if (result.code == 0) {
+
+                $("#name").html(result.data[0].name)
+
+
+                var html = '';
+                html += '<div><label>姓名：</label><span>' + result.data[0].name + '</span></div>';
+                html += '<div><label>学号：</label><span>' + result.data[0].studentID + '</span></div>';
+                html += '<div><label>性别：</label><span>' + result.data[0].sex + '</span></div>';
+                html += '<div><label>学院：</label><span>' + result.data[0].departmentName + '</span></div>';
+                html += '<div><label>专业：</label><span>' + result.data[0].specialty + '</span></div>';
+                html += '<div><label>班级：</label><span>' + result.data[0].className + '</span></div>';
+                html += '<div><label>年级：</label><span>' + result.data[0].yearIn + '</span></div>';
+                $("#studentBox").html(html);
+
+
+                var html = '';
+                html += '<div><label>申请编号：</label><span>' + result.data[0].outSchoolID + '</span></div>';
+                html += '<div><label>外出类型：</label><span>' + result.data[0].outType + ' ' + result.data[0].otherOutType +
+                    '</span></div>';
+                html += '<div><label>外出去向：</label><span>' + result.data[0].outAddress + '</span></div>';
+                html += '<div><label>开始时间：</label><span>' + new Date(result.data[0].startDate).Format("yyyy-MM-dd") +
+                    '</span></div>';
+                html += '<div><label>结束时间：</label><span>' + new Date(result.data[0].endDate).Format("yyyy-MM-dd") +
+                    '</span></div>';
+                html += '<div><label>涉及天数：</label><span>' + result.data[0].days + '</span></div>';
+                html += '<div><label>出入次数：</label><span>' + result.data[0].passNum + '</span></div>';
+                html += '<div><label>提交时间：</label><span>' + new Date(result.data[0].submitDate).Format("yyyy-MM-dd hh:mm:ss") +
+                    '</span></div>';
+                html += '<div><label>联系电话：</label><span>' + result.data[0].phone + '</span></div>';
+                html += '<div><label>紧急联系人：</label><span>' + result.data[0].linkName + '</span></div>';
+                html += '<div><label>紧急联系人电话：</label><span>' + result.data[0].linkPhone + '</span></div>';
+                $("#outScholDetailBox").html(html);
+
+                var html = '';
+                if (result.data[0].outType == "临时出校（一天仅一次）") {
+                    $("#auditTitleBox").html("报备记录");
+                    var html = '<div><label>报备状态：</label><span>' + (result.data[0].status == 1 ? '报备完成' : '') + '</span></div>';
+                    $("#auditBox").html(html);
+                } else {
+                    var result1 = {
+                        "msg": "查询成功",
+                        "data": [
+                            {
+                                "remark": "",
+                                "auditName": getParam()["auditName"],
+                                "submitLevel": "1",
+                                "stateTxt": "审批通过",
+                                "auditDate": new Date(new Date().getTime() - 7229394).Format("yyyy/MM/dd hh:mm:ss"),
+                            }
+                        ],
+                        "code": 0
+                    };
+                    //查询审批记录
+                    if (result1.code == 0) {
+                        html = '';
+                        for (var i = 0; i < result1.data.length; i++) {
+                            var auditRole = "";
+                            if (result1.data[i]["submitLevel"] == "1")
+                                auditRole = "（辅导员）";
+                            if (result1.data[i]["submitLevel"] == "2")
+                                auditRole = "（学院党总支）";
+
+                            html += '<div><label>审批老师' + (i + 1) + '：</label><span>' + result1.data[i].auditName + auditRole +
+                                '</span></div>';
+
+                            html += '<div><label>审批状态' + (i + 1) + '：</label><span>' + result1.data[i].stateTxt + '</span></div>';
+                            if (result1.data[i].auditDate != "")
+                                html += '<div><label>审批时间' + (i + 1) + '：</label><span>' + result1.data[i].auditDate +
+                                    '</span></div>';
+
+                            if (result1.data[i].remark != "")
+                                html += '<div><label>拒绝原因' + (i + 1) + '：</label><span>' + result1.data[i].remark + '</span></div>';
+
+                        }
+                        if (html == '') {
+                            if (result.data[0].audit1Name != "")
+                                html += '<div><label>审批老师1：</label><span>' + result.data[0].audit1Name + '（辅导员）</span></div>';
+                            if (result.data[0].state1 != "")
+                                html += '<div><label>审批状态1：</label><span>' + formatStatus(result.data[0].state1) + '</span></div>';
+                            if (result.data[0].audit1Date != "")
+                                html += '<div><label>审批时间1：</label><span>' + result.data[0].audit1Date + '</span></div>';
+                            if (result.data[0].audit2Name != "")
+                                html += '<div><label>审批老师2：</label><span>' + result.data[0].audit2Name + '（学院党总支）</span></div>';
+                            if (result.data[0].state2 != "")
+                                html += '<div><label>审批状态2：</label><span>' + formatStatus(result.data[0].state2) + '</span></div>';
+                            if (result.data[0].audit2Date != "")
+                                html += '<div><label>审批时间2：</label><span>' + result.data[0].audit2Date + '</span></div>';
+                            if (result.data[0].remark != "" && result.data[0].status != "1")
+                                html += '<div><label>拒绝原因：</label><span>' + result.data[0].remark + '</span></div>';
+                        } else {
+                            var x = result1.data.length + 1;
+                            if (result.data[0].state1 == "0") {
+                                html += '<div><label>审批老师' + x + '：</label><span>' + result.data[0].audit1Name +
+                                    '（辅导员）</span></div>';
+                                html += '<div><label>审批状态' + x + '：</label><span>' + formatStatus(result.data[0].state1) +
+                                    '</span></div>';
+                                html += '<div><label>审批时间' + x + '：</label><span>' + result.data[0].audit1Date + '</span></div>';
+                            } else if (result.data[0].state2 == "0") {
+                                html += '<div><label>审批老师' + x + '：</label><span>' + result.data[0].audit2Name +
+                                    '（学院党总支）</span></div>';
+                                html += '<div><label>审批状态' + x + '：</label><span>' + formatStatus(result.data[0].state2) +
+                                    '</span></div>';
+                                html += '<div><label>审批时间' + x + '：</label><span>' + result.data[0].audit2Date + '</span></div>';
+                            }
+                        }
+                        $("#auditBox").html(html);
+                    }
+                }
+            };
+            if (result.data[0].status == "1") {
+                $(".createImgBtn").attr("disabled", false);
+                if (result.data[0].passStatus == "" || result.data[0].passStatus == "出")
+                    $(".createOutBtn").attr("disabled", false);
+                if (result.data[0].passStatus == "出" || result.data[0].passStatus == "入")
+                    $(".createInBtn").attr("disabled", false);
+            }
+        }
+    </script>
+</body>
+
+</html>

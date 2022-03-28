@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>出校申报</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <style>
+        .footerBtnBox {
+            padding: 10px;
+            height: 54px;
+        }
+
+        .mui-card-footer.footerBtnBox .mui-card-link {
+            text-align: center;
+            background: #3a96fa;
+            width: 49%;
+            display: block;
+            color: #fff;
+            border-radius: 5px;
+            line-height: 34px;
+            height: 34px;
+            transition: all 0.3s;
+        }
+
+        .mui-card-footer.footerBtnBox .mui-card-link:last-child {
+            background: #EA5628
+        }
+
+        .mui-card-footer.footerBtnBox .mui-card-link:last-child:active {
+            background: #CF2D28
+        }
+
+        .mui-card-footer.footerBtnBox .mui-card-link:active {
+            background: #007AFF;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mui-content" id="outSchoolBox" style="padding-bottom: 45px;">
+
+    </div>
+
+    <nav class="footerNav">
+        <button class="whiteBtn">
+            <span class="mui-icon mui-icon-more"></span>
+            <span>申请记录</span>
+        </button>
+        <button>
+            <span class="mui-icon mui-icon-compose"></span>
+            <span>出校申报</span>
+        </button>
+    </nav>
+
+    <script src="js/mui.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/common.js"></script>
+
+    <script>
+        function getParam() {
+            var url = location.search; //获取url中"?"符后的字串
+            var info = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    if (strs[i].indexOf("studentName=") != -1) {
+                        info['studentName'] = decodeURIComponent(strs[i].replace("studentName=", ""));
+                    };
+                    if (strs[i].indexOf("studentId=") != -1) {
+                        info['studentId'] = decodeURIComponent(strs[i].replace("studentId=", ""));
+                    };
+                    if (strs[i].indexOf("studentSex=") != -1) {
+                        info['studentSex'] = decodeURIComponent(strs[i].replace("studentSex=", ""));
+                    };
+                    if (strs[i].indexOf("outType=") != -1) {
+                        info['outType'] = decodeURIComponent(strs[i].replace("outType=", ""));
+                    };
+                };
+                return info;
+            } else {
+                info = { 'studentName': '雍和明', 'studentId': '114514', 'studentSex': '男' }
+                return info;
+            }
+        }
+
+        (function (mui) {
+            mui.init();
+            getMyOutSchool();
+        })(mui);
+
+        function getMyOutSchool(result) {
+            var randomNum = '';
+            for (var i = 0; i < 5; i++) {
+                randomNum += Math.floor(Math.random() * 10);
+            }
+            var result = {
+                "msg": "查询成功",
+                "data": [
+                    {
+                        "outSchoolID": new Date().Format("yyyyMMdd" + randomNum),
+                        "studentID": getParam()["studentId"],
+                        "sex": getParam()["studentSex"],
+                        "name": getParam()["studentName"],
+                        "submitDate": new Date(new Date().getTime() - 14400000).Format("yyyy/MM/dd hh:mm:ss"),
+                        "passNum": "每天出入一次",
+                        "days": "3",
+                        "status": "1",
+                        "otherOutType": "",
+                        "outType": getParam()["outType"],
+                        "startDate": new Date().Format("yyyy/MM/dd hh:mm:ss"),
+                        "endDate": new Date(new Date().getTime() + 259200000).Format("yyyy/MM/dd hh:mm:ss")
+                    },
+                    {
+                        "outSchoolID": new Date(new Date().getTime() - 86400000 - 3612345).Format("yyyyMMdd" + randomNum),
+                        "studentID": getParam()["studentId"],
+                        "sex": getParam()["studentSex"],
+                        "name": getParam()["studentName"],
+                        "submitDate": new Date(new Date().getTime() - 86400000 - 14400000 - 3612345).Format("yyyy/MM/dd hh:mm:ss"),
+                        "passNum": "共一次出入",
+                        "days": "1",
+                        "status": "1",
+                        "otherOutType": "",
+                        "outType": "收寄快递（1小时有效）",
+                        "startDate": new Date(new Date().getTime() - 86400000 - 3612345).Format("yyyy/MM/dd hh:mm:ss"),
+                        "endDate": new Date(new Date().getTime() - 86400000 + 3600000).Format("yyyy/MM/dd hh:mm:ss")
+                    },
+                    {
+                        "outSchoolID": new Date(new Date().getTime() - 86400000 * 2 - 7256789).Format("yyyyMMdd" + randomNum),
+                        "studentID": getParam()["studentId"],
+                        "sex": getParam()["studentSex"],
+                        "name": getParam()["studentName"],
+                        "submitDate": new Date(new Date().getTime() - 86400000 * 2 - 14400000 - 7256789).Format("yyyy/MM/dd hh:mm:ss"),
+                        "passNum": "共一次出入",
+                        "days": "1",
+                        "status": "1",
+                        "otherOutType": "",
+                        "outType": "收寄快递（1小时有效）",
+                        "startDate": new Date(new Date().getTime() - 86400000 * 2 - 7256789).Format("yyyy/MM/dd hh:mm:ss"),
+                        "endDate": new Date(new Date().getTime() - 86400000 * 2 + 3600000 - 7256789).Format("yyyy/MM/dd hh:mm:ss")
+                    }
+                ],
+                "code": 0
+            };
+            var html = '';
+            var strs = location.search;
+            for (var i = 0; i < result.data.length; i++) {
+                html += '<div class="mui-card">';
+                html += '<div class="mui-card-header">申请编号：' + result.data[i].outSchoolID + '</div>';
+                html += '<div class="mui-card-content">';
+                html += '<div class="mui-card-content-inner">';
+                html += '<div>姓<span style="visibility: hidden;">空空</span>名：' + result.data[i].name + '</div>';
+                html += '<div>学<span style="visibility: hidden;">空空</span>号：' + result.data[i].studentID + '</div>';
+                html += '<div>开始时间：' + new Date(result.data[i].startDate).Format("yyyy-MM-dd") + '</div>';
+                html += '<div>结束时间：' + new Date(result.data[i].endDate).Format("yyyy-MM-dd") + '</div>';
+                html += '<div>外出类型：' + result.data[i].outType + " " + result.data[i].otherOutType + '</div>';
+                html += '<div>涉及天数：' + result.data[i].days + '天</div>';
+                html += '<div>出入次数：' + result.data[i].passNum + '</div>';
+                html += '<div>状<span style="visibility: hidden;">空空</span>态：' + formatStatus(result.data[i]) + '</div>';
+                html += '<div>提交时间：' + new Date(result.data[i].submitDate).Format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="mui-card-footer footerBtnBox">';
+                html += '<a class="mui-card-link" href="beta-detail.html' + strs + '"' + '>详情</a>';
+                if (result.data[i].status == 0)
+                    html += '<a class="mui-card-link" >取消</a>';
+                else {
+                    html += '<a class="mui-card-link" style="background:#eee;color:#999">取消</a>';
+                }
+                html += '</div>';
+                html += '</div>';
+            }
+            if (html == '')
+                html = '<div class="msgBox">无任何记录</div>';
+            $("#outSchoolBox").html(html);
+        }
+
+        function formatStatus(item) {
+            if (item.status == "0")
+                return "审批中";
+            if (item.status == "1")
+                return item.outType == "临时出校（一天仅一次）" ? "<font color=green>报备完成</font>" : "<font color=green>审批通过</font>";
+            if (item.status == "2")
+                return "<font color=red>审批拒绝</font>";
+            if (item.status == "3")
+                return "<font color=orange>需补正</font>";
+            return s;
+        }
+    </script>
+</body>
+
+</html>

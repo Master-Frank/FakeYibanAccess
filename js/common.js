@@ -1,5 +1,5 @@
 
-var remoteUrl = "https://ygj.gduf.edu.cn/";
+var remoteUrl = "https://eastitem.github.io/";
 function goTo(url) {
 	window.location.href = url;
 }

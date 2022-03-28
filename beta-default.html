@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>易广金-学生端</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <style>
+        body {
+            padding: 2%;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            width: 21%;
+            text-decoration: none;
+            color: #000;
+            float: left;
+        }
+
+            a span {
+                display: block;
+                margin-top: 0px;
+                line-height: 20px;
+                height: 40px;
+            }
+
+            a img {
+                width: 100%;
+            }
+
+        #mainBox {
+            display: none;
+        }
+
+            #mainBox a {
+                margin: 2%;
+            }
+
+        .noticeBox {
+            overflow: hidden;
+            width: 100%;
+            float: left;
+        }
+
+            .noticeBox .item {
+                border-bottom: 1px solid #ccc;
+                overflow: hidden;
+                padding: 5px 0 5px 0;
+            }
+
+                .noticeBox .item:first-child {
+                    border-top: 1px solid #ccc;
+                }
+
+                .noticeBox .item span {
+                    display: block;
+                    width: 100%;
+                    float: left;
+                    font-size: 12px;
+                    line-height: 20px;
+                }
+
+                    .noticeBox .item span:last-child {
+                        display: block;
+                        width: 100%;
+                        float: left;
+                        text-align: left;
+                        font-size: 12px;
+                        color: #666;
+                    }
+    </style>
+</head>
+
+<body>
+    <div id="mainBox">
+        <a><img src="images/qjzs.png"><span>请假助手</span></a>
+        <a><img src="images/cwj.png"><span>查违纪</span></a>
+        <a><img src="images/xszs.png"><span>新生助手</span></a>
+        <a><img src="images/yjth.png"><span>一键通话</span></a>
+        <a><img src="images/jwxt.png"><span>教务系统</span></a>
+        <a><img src="images/stfw.png"><span>社团服务</span></a>
+        <a><img src="images/xwzl.png"><span>寻物招领</span></a>
+        <a><img src="images/health.png"><span>健康打卡</span></a>
+        <a><img src="images/backschool.png"><span>返校申请</span></a>
+        <a><img src="images/outschool.png" onClick="gonext()"><span>出校申报</span></a>
+        <a><img src="images/kjscx.png"><span>空教室查询</span></a>
+        <a><img src="images/xzzs.png"><span>学子之声</span></a>
+    </div>
+    <script src="js/mui.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        function gonext() {
+            var strs = location.search; //获取url中"?"符后的字串
+            window.location.href = "beta-student-index.html" + strs;
+        };
+        $("#mainBox").show();
+
+    </script>
+</body>
+
+</html>

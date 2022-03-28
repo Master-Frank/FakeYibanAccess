@@ -1,77 +1,157 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="theme-color" content="#6DB0FA" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <title>生成出入凭证</title>
-  <link rel="stylesheet" href="./css/index.css">
+    <meta charset="UTF-8">
+    <title>易广金出入凭证生成器</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/time.js"></script>
+    <script type="text/javascript" src="js/qrcode.js"></script>
 </head>
 
 <body>
-  <header>
-    <h1 class="title">生成出入凭证</h1>
-  </header>
-  <main>
-    <div class="form">
-      <div>
-        <div>姓名</div>
-        <input value="雍和明" id="studentName" />
-      </div>
-      <div>
-        <div>学号</div>
-        <input value="114514" id="studentId" />
-      </div>
-      <div>
-        <button id="out">出</button>
-        <button id="in">入</button>
-      </div>
-      <br>
-      <div>
-        <p class="tips" style="color: red;">在出入凭证页面单击屏幕可以全屏显示</p>
-      </div>
-    </div>
-  </main>
-  <script src="./js/jquery.min.js"></script>
-  <script>
-    var studentName = $("#studentName");
-    var studentId = $("#studentId");
-    var out = $("#out");
-    var getin = $("#in");
+    <section class="aui-flexView">
+        <header class="aui-navBar aui-navBar-fixed">
+            <div class="aui-center">
+                <span class="aui-center-title">易广金出入凭证生成器</span>
+            </div>
+        </header>
+        <section class="aui-scrollView">
+            <div class="aui-code-box" id="content">
+                <form action="">
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="studentName"
+                            autocomplete="off" placeholder="请输入姓名" />
+                    </p>
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="studentId"
+                            autocomplete="off" placeholder="请输入学号" />
+                    </p>
 
-    //进入全屏
-    function enterFullScreen() {
-      var de = document.documentElement;
-      if (de.requestFullscreen) {
-        de.requestFullscreen();
-      } else if (de.mozRequestFullScreen) {
-        de.mozRequestFullScreen();
-      } else if (de.webkitRequestFullScreen) {
-        de.webkitRequestFullScreen();
-      }
-    }
-    //退出全屏
-    function exitFullScreen() {
-      var de = document;
-      if (de.exitFullscreen) {
-        de.exitFullscreen();
-      } else if (de.mozCancelFullScreen) {
-        de.mozCancelFullScreen();
-      } else if (de.webkitCancelFullScreen) {
-        de.webkitCancelFullScreen();
-      }
-    }
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="className"
+                            autocomplete="off" placeholder="请输入班级名称" />
+                        格式:18保险学-2班
+                    </p>
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="specialty"
+                            autocomplete="off" placeholder="请输入专业" />
+                    </p>
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="departmentName"
+                            autocomplete="off" placeholder="请输入学院名称" />
+                    </p>
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="auditName"
+                            autocomplete="off" placeholder="请输入辅导员" />
+                    </p>
+                    <p class="aui-code-line">
+                        <input type="text" class="aui-code-line-input" name="search" value="" id="outType"
+                            autocomplete="off" placeholder="请输入外出原因" />
+                    </p>
+                    <br />
+                    <div class="tab">
+                        <button class="tablinks  active" id='male' onClick="changeSex()">男</button>
+                        <button class="tablinks" id="female" onclick="changeSex()">女</button>
+                    </div>
+                    <br />
+                    <div class="aui-che-item">
+                        <div class="aui-cell-che">
+                            <input type="checkbox" class="aui-well-check" name="checkbox1" id="checkbox1"
+                                checked="checked">
+                            <i class="aui-well-icon-checked"></i>
+                        </div>我已经阅读并同意 <a href="disclaimer.html">《免责声明》</a>
+                    </div>
 
-    out.on('click', function () {
-      location.href = `show.html?studentId=${studentId.val()}&studentName=${studentName.val()}&fun=0`
-    })
-    getin.on('click', function () {
-      location.href = `show.html?studentId=${studentId.val()}&studentName=${studentName.val()}&fun=1`
-    })
-  </script>
+                    <div class="aui-code-btn">
+                        <button type="button" onClick="next()" id="bt1">生成二维码(推荐)</button>
+                    </div>
+
+                    <br />
+
+                    <font color="#FF0000">(推荐)生成二维码后截图保存，用易班扫一扫打开</font>
+                    <br />
+                    <div class="aui-code-btn">
+                        <button type="button" onClick="gonext()" id="bt1">直接进入页面</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="result" class="aui-code-box" style="display: none;">
+                <br />
+                <div id="qrcodeTable" align="center"></div>
+                <br />
+                <font color="#FF0000">(推荐)生成二维码后截图保存，用易班扫一扫打开</font>
+                <br />
+                <br />
+                <button type="button" onClick="back()">返回</button>
+            </div>
+        </section>
+    </section>
+
+    <script type="text/javascript" charset="utf-8">
+        var sex = '男';
+        function next() {
+
+            url = geturl();
+            var qrcode = new QRCode('qrcodeTable', { // qrcode为id
+                text: encodeURI(url),
+                width: 300,
+                height: 300
+            });
+            //隐藏 与 显示 相关区域
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('result').style.display = '';
+
+        };
+        function back() {
+            document.getElementById('content').style.display = '';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('qrcodeTable').innerHTML = '';
+        }
+        function changeSex() {
+            if (sex == '男') {
+                document.getElementById('male').className = 'tablinks';
+                document.getElementById('male').disabled = false;
+                document.getElementById('female').disabled = true;
+                document.getElementById('female').className = 'tablinks  active';
+                sex = '女';
+            }
+            else {
+                document.getElementById('female').className = 'tablinks';
+                document.getElementById('female').disabled = false;
+                document.getElementById('male').disabled = true;
+                document.getElementById('male').className = 'tablinks  active';
+                sex = '男';
+            }
+        };
+        function geturl() {
+            var name = document.getElementById('studentName').value.replace(/(^\s*)|(\s*$)/g, '');
+            var id = document.getElementById('studentId').value.replace(/(^\s*)|(\s*$)/g, '');
+            //新
+            var className = document.getElementById('className').value.replace(/(^\s*)|(\s*$)/g, '');
+            var specialty = document.getElementById('specialty').value.replace(/(^\s*)|(\s*$)/g, '');
+            var departmentName = document.getElementById('departmentName').value.replace(/(^\s*)|(\s*$)/g, '');
+            var auditName = document.getElementById('auditName').value.replace(/(^\s*)|(\s*$)/g, '');
+            var outType = document.getElementById('outType').value.replace(/(^\s*)|(\s*$)/g, '');
+            var checkstatus = document.getElementById('checkbox1').checked;
+            if (checkstatus == true) {
+                url = "https:/yiban.frankdawn.com.cn/beta-default.html?studentName=" + name + "&studentId=" + id + "&studentSex=" + sex + "&className=" + className + "&specialty=" + specialty + "&departmentName=" + departmentName + "&auditName=" + auditName + "&outType=" + outType;
+            } else {
+                alert("请先阅读并同意免责说明书！");
+            }
+            return url
+        };
+        function gonext() {
+            url = geturl();
+            window.location.href = url;
+        }
+    </script>
 </body>
 
 </html>
